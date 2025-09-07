@@ -27,12 +27,13 @@ def _():
     except ImportError:
         jsonschema = None
         schema_available = False
-    return datetime, io, json, mo, os, pdf_available, pypdf, re
+    return datetime, json, mo, os, pdf_available, pypdf, re
 
 
 @app.cell
 def _(mo):
-    mo.md("""
+    mo.md(
+        """
     # CAO → JSON Demo 
 
     Upload een CAO PDF bestand om basisinformatie te extraheren met behulp van regex-patronen. 
@@ -44,16 +45,17 @@ def _(mo):
     - **Vakantietoeslag**: percentage vermeldingen
     - **Werktijd**: uren per week  
     - **Reiskosten**: vergoedingstarief
-    """)
+    """
+    )
     return
 
 
 @app.cell
-def _(io, mo, os, pdf_available, pypdf):
+def _(mo, os, pdf_available, pypdf):
     # Extraheer tekst uit voorbeeld bestand (voor static demo)
     text = ""
     filename = ""
-    
+
     # Gebruik voorbeeld PDF voor demo
     voorbeeld_path = "cao_voorbeeld/Cao Bouw en Infra 2025 - 2027.pdf"
     if os.path.exists(voorbeeld_path) and pdf_available:
@@ -67,37 +69,36 @@ def _(io, mo, os, pdf_available, pypdf):
         except Exception as e:
             text = f"PDF fout: {e}"
             filename = "Error"
-    
+
     # Toon tekst zonder accordion (static-friendly)
     if text and len(text) > 1000:
         mo.md(f"""
         ## 📄 Geëxtraheerde Tekst ({filename})
-        
+
         ```
         {text[:1000]}...
-        
+
         [Tekst ingekort voor weergave - totaal {len(text)} karakters]
         ```
         """)
     elif text:
         mo.md(f"""
         ## 📄 Geëxtraheerde Tekst ({filename})
-        
+
         ```
         {text}
         ```
         """)
     else:
         mo.md("❌ Geen tekst gevonden")
-        
-    return text, filename
+    return (text,)
 
 
 @app.cell
 def _(mo, re, text):
     # CAO informatie extractie
     findings = []
-    
+
     if text:
         # Zoek naar vakantietoeslag
         vacation_match = re.search(r'vakantie(?:toeslag|geld).*?(\d+(?:[.,]\d+)?)\s*%', text, re.IGNORECASE)
@@ -127,49 +128,50 @@ def _(mo, re, text):
             })
 
     # Toon resultaten zonder table widget (static-friendly)
+    output_md = ""
     if findings:
         mo.md(f"""
         ## ✅ {len(findings)} CAO Bevindingen Gevonden:
         """)
-        
+
         # Maak markdown tabel
         rows = []
-        for f in findings:
-            rows.append(f"| {f['type']} | {f['value']} | {f['found_in'][:50]}... |")
-        
+        for find in findings:
+            rows.append(f"| {find['type']} | {find['value']} | {find['found_in'][:50]}... |")
+
         table_md = """
-| Type | Waarde | Gevonden in tekst |
-|------|--------|-------------------|
-""" + "\n".join(rows)
-        
-        mo.md(table_md)
+    | Type | Waarde | Gevonden in tekst |
+    |------|--------|-------------------|
+    """ + "\n".join(rows)
+
+        output_md = mo.md(table_md)
     else:
-        mo.md("## ❌ Geen CAO bevindingen gevonden")
-        
-    return findings,
+        output_md = mo.md("## ❌ Geen CAO bevindingen gevonden")
+    output_md
+    return (findings,)
 
 
 @app.cell
 def _(datetime, findings, json, mo):
     # JSON uitvoer (static-friendly)
+    cao_data = None
+    json_output = ""
+
     if findings:
         cao_data = {
             "geëxtraheerd_op": datetime.datetime.now().isoformat(),
             "bepalingen": findings,
             "totaal_gevonden": len(findings)
         }
-        
-        mo.md(f"""
-        ## 📋 JSON Data Model Output:
-        
-        ```json
-        {json.dumps(cao_data, indent=2, ensure_ascii=False)}
-        ```
-        """)
+
+        # Netjes geformatteerde JSON output
+        json_output = json.dumps(cao_data, indent=2, ensure_ascii=False)
+
     else:
-        mo.md("*Geen data om te exporteren*")
-        
-    return cao_data if findings else None,
+        mo.md("## 📋 JSON Output\n\n*Geen data om te exporteren*")
+
+    print(json_output)
+    return
 
 
 if __name__ == "__main__":
