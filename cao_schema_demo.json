@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "NL-CAO Demo Schema v0.1",
+  "type": "object",
+  "required": [
+    "metadata",
+    "provisions"
+  ],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": [
+        "title"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "publisher": {
+          "type": "string"
+        },
+        "signed_at": {
+          "type": "string"
+        },
+        "source_file_hash": {
+          "type": "string"
+        }
+      }
+    },
+    "provisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "type",
+          "validity",
+          "data"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "vakantietoeslag",
+              "werktijd",
+              "reiskosten",
+              "loon_indexatie",
+              "eindejaarsuitkering"
+            ]
+          },
+          "validity": {
+            "type": "object",
+            "required": [
+              "from"
+            ],
+            "properties": {
+              "from": {
+                "type": "string"
+              },
+              "to": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "data": {
+            "type": "object"
+          },
+          "source_ref": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}

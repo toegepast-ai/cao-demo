@@ -1,0 +1,59 @@
+{
+  "vakantietoeslag": {
+    "synonyms": [
+      "vakantietoeslag",
+      "vakantiegeld",
+      "vakantiebijslag",
+      "8%-toeslag"
+    ],
+    "patterns": {
+      "percent": "(\\d{1,2}(?:[.,]\\d{1,2})?)\\s*%",
+      "base": "(bruto\\s+(?:loon|salaris|jaarsalaris)|uurloon)",
+      "month": "(jan(?:uari)?|feb(?:ruari)?|mrt|maart|apr(?:il)?|mei|jun(?:i)?|jul(?:i)?|aug(?:ustus)?|sep(?:tember)?|okt(?:ober)?|nov(?:ember)?|dec(?:ember)?)"
+    }
+  },
+  "werktijd": {
+    "synonyms": [
+      "arbeidsduur",
+      "werktijd",
+      "werkweek",
+      "fulltime"
+    ],
+    "patterns": {
+      "hours_per_week": "(\\d{2})\\s*(?:uur|u)\\s*(?:per\\s*week|pw|/week)"
+    }
+  },
+  "reiskosten": {
+    "synonyms": [
+      "reiskostenvergoeding",
+      "woon-werkvergoeding",
+      "kilometervergoeding",
+      "reisvergoeding"
+    ],
+    "patterns": {
+      "rate": "(\\d{1,2}[.,]\\d{1,2}|\\d{1,2})\\s*cent|\\u20ac\\s*(\\d+[.,]\\d+)\\s*/\\s*km"
+    }
+  },
+  "loon_indexatie": {
+    "synonyms": [
+      "loonstijging",
+      "loonsverhoging",
+      "indexatie",
+      "structurele verhoging"
+    ],
+    "patterns": {
+      "percent": "(\\d{1,2}(?:[.,]\\d{1,2})?)\\s*%",
+      "date": "per\\s+(\\d{1,2}\\s+\\w+|\\d{1,2}-\\d{1,2}-\\d{2,4}|\\d{4}-\\d{2}-\\d{2})"
+    }
+  },
+  "eindejaarsuitkering": {
+    "synonyms": [
+      "eindejaarsuitkering",
+      "13e maand",
+      "dertien(de)? maand"
+    ],
+    "patterns": {
+      "percent": "(\\d{1,2}(?:[.,]\\d{1,2})?)\\s*%"
+    }
+  }
+}
