@@ -68,7 +68,7 @@ def _(file_upload, io, mo, pdf_available, pypdf):
     import os
     
     acc_text = None
-    if not file_upload.value:
+    if not file_upload.contents():
         # Gebruik voorbeeld PDF als geen bestand is geüpload
         voorbeeld_path = "cao_voorbeeld/Cao Bouw en Infra 2025 - 2027.pdf"
         if os.path.exists(voorbeeld_path) and pdf_available:
