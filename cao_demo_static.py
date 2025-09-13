@@ -39,7 +39,7 @@ def _(mo):
     Upload een CAO PDF bestand om basisinformatie te extraheren met behulp van regex-patronen. 
     Dit voorbeeld demonstreert een data model voor CAO-informatie en hoe deze gestructureerd kan worden in JSON-format.
 
-    💡 **Demo Mode**: Deze versie toont automatisch resultaten van een voorbeeld CAO (Bouw & Infra 2025-2027).
+    **Demo Mode**: Deze versie toont automatisch resultaten van een voorbeeld CAO (Bouw & Infra 2025-2027).
 
     ### Data Model
     - **Vakantietoeslag**: percentage vermeldingen
@@ -73,7 +73,7 @@ def _(mo, os, pdf_available, pypdf):
     # Toon tekst zonder accordion (static-friendly)
     if text and len(text) > 1000:
         mo.md(f"""
-        ## 📄 Geëxtraheerde Tekst ({filename})
+        ## Geëxtraheerde Tekst ({filename})
 
         ```
         {text[:1000]}...
@@ -90,7 +90,7 @@ def _(mo, os, pdf_available, pypdf):
         ```
         """)
     else:
-        mo.md("❌ Geen tekst gevonden")
+        mo.md("Geen tekst gevonden")
     return (text,)
 
 
@@ -131,7 +131,7 @@ def _(mo, re, text):
     output_md = ""
     if findings:
         mo.md(f"""
-        ## ✅ {len(findings)} CAO Bevindingen Gevonden:
+        ## {len(findings)} CAO Bevindingen Gevonden:
         """)
 
         # Maak markdown tabel
@@ -146,7 +146,7 @@ def _(mo, re, text):
 
         output_md = mo.md(table_md)
     else:
-        output_md = mo.md("## ❌ Geen CAO bevindingen gevonden")
+        output_md = mo.md("## Geen CAO bevindingen gevonden")
     output_md
     return (findings,)
 
@@ -168,7 +168,7 @@ def _(datetime, findings, json, mo):
         json_output = json.dumps(cao_data, indent=2, ensure_ascii=False)
 
     else:
-        mo.md("## 📋 JSON Output\n\n*Geen data om te exporteren*")
+        mo.md("## JSON Output\n\n*Geen data om te exporteren*")
 
     print(json_output)
     return
